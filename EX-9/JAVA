@@ -1,0 +1,49 @@
+package com.psg.ex_9;
+
+import android.os.Bundle;
+import android.os.Handler;
+import android.widget.Button;
+import android.widget.TextView;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    int counter = 0;
+    boolean isCounting = false;
+    Handler handler = new Handler();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        TextView timer = findViewById(R.id.timer);
+        Button startBtn = findViewById(R.id.start);
+        Button resetBtn = findViewById(R.id.reset);
+
+        startBtn.setOnClickListener(v -> {
+            if(!isCounting){
+                isCounting=true;
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(isCounting){
+                            counter++;
+                            timer.setText(String.valueOf(counter));
+                            handler.postDelayed(this, 1000);
+                        }
+                    }
+                },1000);
+            }
+        });
+
+        resetBtn.setOnClickListener(v -> {
+            isCounting=false;
+            counter = 0;
+            timer.setText(String.valueOf(counter).toString());
+        });
+
+    }
+}
