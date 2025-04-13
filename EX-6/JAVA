@@ -1,0 +1,22 @@
+package com.psg.ex_6;
+
+import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Button;
+import androidx.appcompat.app.AppCompatActivity;
+import java.util.Date;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        Button btn = findViewById(R.id.btn);
+        TextView res = findViewById(R.id.result);
+
+        btn.setOnClickListener(v -> {
+            res.setText(new Date().toString());
+        });
+    }
+}
