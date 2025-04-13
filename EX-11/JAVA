@@ -1,0 +1,44 @@
+package com.psg.ex_11;
+
+import android.Manifest;
+import android.os.Bundle;
+import android.telephony.SmsManager;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.activity.EdgeToEdge;
+import androidx.core.app.ActivityCompat;
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+
+    int generatedOtp;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        EditText phone = findViewById(R.id.phone);
+        EditText otp = findViewById(R.id.otp);
+        Button send = findViewById(R.id.send);
+        Button verify = findViewById(R.id.verify);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.SEND_SMS}, 1);
+
+        send.setOnClickListener(v -> {
+            generatedOtp = 1000 + new Random().nextInt(9000);
+            String message = "Your OTP is: " + generatedOtp;
+            String phoneNumber = phone.getText().toString();
+
+            SmsManager.getDefault().sendTextMessage(phoneNumber, null, message, null, null);
+
+            Toast.makeText(this, "OTP Sent", Toast.LENGTH_SHORT).show();
+        });
+
+        verify.setOnClickListener(v -> {
+            boolean isValid = String.valueOf(generatedOtp).equals(otp.getText().toString());
+            Toast.makeText(this, isValid ? "OTP Verified" : "Invalid OTP", Toast.LENGTH_SHORT).show();
+        });
+    }
+}
