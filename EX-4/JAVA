@@ -1,0 +1,46 @@
+package com.psg.ex_4;
+
+import android.os.Bundle;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        ListView colorList= findViewById(R.id.colors);
+        Spinner placeSpin = findViewById(R.id.place);
+        Button btn = findViewById(R.id.btn);
+
+        String[] colors = {"Red", "Yellow", "Blue"};
+        String[] places = {"Coimbatore", "Tirupur", "Kerala"};
+
+        colorList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, colors));
+        placeSpin.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, places));
+
+        btn.setOnClickListener(v -> {
+            int selectedIndexColor = colorList.getCheckedItemPosition();
+            int selectedIndexPlace = placeSpin.getSelectedItemPosition();
+
+            String selectedColor = colors[selectedIndexColor];
+            String selectedPlace = places[selectedIndexPlace];
+
+            String result = "Color :" + selectedColor + "\nPlace : " + selectedPlace;
+            Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+        });
+    }
+}
