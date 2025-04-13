@@ -2,7 +2,6 @@ package com.psg.ex_12;
 
 import android.database.Cursor;
 import android.os.Bundle;
-
 import androidx.activity.EdgeToEdge;
 import android.database.sqlite.*;
 import android.widget.*;
