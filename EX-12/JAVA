@@ -1,0 +1,51 @@
+package com.psg.ex_12;
+
+import android.database.Cursor;
+import android.os.Bundle;
+
+import androidx.activity.EdgeToEdge;
+import android.database.sqlite.*;
+import android.widget.*;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    SQLiteDatabase db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_main);
+
+        EditText roll = findViewById(R.id.roll);
+        EditText name = findViewById(R.id.name);
+        TextView result = findViewById(R.id.result);
+
+        db = openOrCreateDatabase("studentDB", MODE_PRIVATE, null);
+        db.execSQL("CREATE TABLE IF NOT EXISTS student(roll INTEGER PRIMARY KEY, name TEXT)");
+
+        findViewById(R.id.add).setOnClickListener(v -> {
+            db.execSQL("INSERT INTO student VALUES(" + roll.getText() + ",'" + name.getText() + "')");
+            result.setText("Record Added");
+        });
+
+        findViewById(R.id.update).setOnClickListener(v -> {
+            db.execSQL("UPDATE student SET name='" + name.getText() + "' WHERE roll=" + roll.getText());
+            result.setText("Record Updated");
+        });
+
+        findViewById(R.id.delete).setOnClickListener(v -> {
+            db.execSQL("DELETE FROM student WHERE roll=" + roll.getText());
+            result.setText("Record Deleted");
+        });
+
+        findViewById(R.id.view).setOnClickListener(v -> {
+            Cursor c = db.rawQuery("SELECT * FROM student", null);
+            StringBuilder s = new StringBuilder();
+            while (c.moveToNext())
+                s.append("Roll: ").append(c.getInt(0)).append(" | Name: ").append(c.getString(1)).append("\n");
+            result.setText(s.length() == 0 ? "No Records Found" : s.toString());
+        });
+    }
+}
